@@ -5,14 +5,22 @@
 #include "Ball.h"
 #include <thread>
 #include <vector>
+#include "Lift.h"
 
 using namespace std;
 
 Window *window;
+Lift* lift;
 vector<Ball*> balls;
 bool endFlag = true;
 vector<thread> threads;
 
+void moveLift(Lift *lift){
+ while((endFlag)){
+     lift->moveLift();
+     usleep(60000);
+ }
+}
 
 
 void moveBall(Ball * ball){
@@ -27,6 +35,7 @@ void windowRefresh(){
     while(endFlag
 ) {
         clear();
+           lift->drawLift();
         for (int i = 0; i < balls.size(); i++) {
             balls[i]->drawBall();
         }
@@ -35,6 +44,17 @@ void windowRefresh(){
     }
     clear();
     endwin();
+}
+
+void makeNewLift(){
+     float x = window->getWidth();
+     float y = window->getHeight();
+
+     lift=new Lift(x,y);
+     moveLift(lift);
+
+     usleep(50000);
+
 }
 void makeNewBall(){
     float x = window->getWidth();
@@ -65,15 +85,21 @@ void exitProgram(){
     }
 }
 
+
+
 int main() {
     srand(time(NULL));
     window = new Window();
+
+    thread generateNewLift(makeNewLift);
     thread generateBallThread(makeNewBall);
     thread windowRefreshThread(windowRefresh);
+    
     thread exitProgramThread(exitProgram);
     exitProgramThread.join();
     generateBallThread.join();
     windowRefreshThread.join();
+    generateNewLift.join();
 
     for(int i = 0; i<threads.size(); i++){
         threads[i].join();
