@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include "Ball.h"
+using namespace std; 
 
 Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init) {
     this->direction = direction;
@@ -14,12 +15,16 @@ Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init) {
     setRandomDirection();
 }
 
-void Ball::moveBall() {
-   
+void Ball::moveBall(int vectorXL, int vectorYL) {
+ 
+
+ if(xVectora==vectorXL&& yVectora==vectorYL){
+    xVectora=oldXVectora;
+    yVectora=oldYVector;}
     posX += xVectora;
     posY += yVectora;
     speed+=5000;
-
+    
     if( posX >= windowPosX ) {
       
         xVectora *= -1;
@@ -46,7 +51,15 @@ void Ball::moveBall() {
         speed=defaultSpeed; 
         
     }
-}
+} 
+
+
+
+ 
+ 
+  
+   
+
 
 void Ball::drawBall() {
     move(posY,posX);
@@ -63,22 +76,35 @@ void Ball::setRandomDirection() {
         case 1:
             xVectora = -2;
             yVectora = -1;
+            oldXVectora=-2;
+            oldYVector=-1;
             break;
         case 2:
             xVectora = 0;
             yVectora = -1;
+            oldXVectora=0;
+            oldYVector=-1;
             break;
         case 3:
+          
             xVectora = -1;
             yVectora = -1;
+            oldXVectora=-1;
+            oldYVector=-1;
             break;
         case 4:
+            
             xVectora = 2;
             yVectora = -1;
+            oldXVectora= 2;
+            oldYVector=-1;
             break;
         case 5:
+            
             xVectora = 1;
             yVectora = -1;
+            oldXVectora=1;
+            oldYVector=-1;
             break;
         
     }
