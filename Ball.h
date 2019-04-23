@@ -18,11 +18,12 @@ public:
     int speed;  //prędkość z jaką porusza się piłka
     int defaultSpeed; 
     bool isInLift; 
+    int ballId; 
     
 
     
 public:
-    Ball(short vec, int , int, int, bool );
+    Ball(short vec, int , int, int, bool, int);
     ~Ball();
     void moveBall(int, int);
     void drawBall();

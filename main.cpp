@@ -6,6 +6,9 @@
 #include <thread>
 #include <vector>
 #include <iostream>
+#include <fstream>
+
+
 
 using namespace std;
 
@@ -14,6 +17,7 @@ Lift* lift;
 vector<Ball*> balls;
 bool endFlag = true;
 vector<thread> threads;
+int counterBall=0; 
 
 void moveLift(Lift *lift){
  while((endFlag)){
@@ -27,39 +31,71 @@ void moveBall(Ball * ball){
 
     while(( endFlag
  ) ) {
-   /*  if(ball->isInLift==true){
-         if(lift->counter%2==0 && lift->counter!=0){
-              ball->moveBall(lift->xVectora, lift->yVectora);
-              usleep(ball->getSpeed());
-              lift->isOccupied=false;
-              ball->isInLift=false;
-         }
-              else{
-                     
+   
+if(lift->isOccupied==true){
+  ofstream myfile;
+  myfile.open ("output.txt");
+  myfile << "Writing this to a file.\n";
+  myfile<<"Lift pos x"<<lift->posX<<"lift pos y"<<lift->posY<<endl; 
+  myfile<<"Ball pos x"<<ball->posX<<"ball pos y"<<ball->posY<<endl; 
+  myfile<<"Ball id "<<ball->ballId<<endl;
+  myfile<<"Lift status "<<lift->isOccupied<<endl;
+  myfile<<"Lift ball in "<<lift->ballInsideIndex<<endl;
+
+  myfile.close();
+  if(lift->ballInsideIndex==ball->ballId){
+      if(lift->counter%2==0 && lift->counter!=0){
+        ball->moveBall(lift->xVectora, lift->yVectora);
+        usleep(ball->getSpeed());
+        lift->isOccupied=false;
+        lift->ballInsideIndex=-1;
+      }
+        ball-> posX=lift->posX;
+        ball-> posY=lift->posY;
+        ball-> xVectora=lift->xVectora;
+        ball-> yVectora=lift->yVectora;
+        lift->counter++;
+         
          ball->speed=1;
-      if( ball->posX >= ball->windowPosX ) {
-            ball-> xVectora *= -1;
-        }
-       if(ball->posX<=0){
+
+    if( ball->posX >= ball->windowPosX ) {
+      
        ball-> xVectora *= -1;
-       }
-       if( ball->posY >= ball->windowPosY  ) {
-       ball-> yVectora *= -1;
-       }
-       if(ball->posY <= 0){
-       ball-> yVectora *= -1;
-       }
-       usleep(90000);
-              }
-    
+        
      }
 
-     if(ball->isInLift==false && lift->isOccupied==true){
-          ball->moveBall(lift->xVectora, lift->yVectora);
-        usleep(ball->getSpeed());
-     }*/
+   if(ball->posX<=0){
+       ball-> xVectora *= -1;
+       
+    }
+
+    if( ball->posY >= ball->windowPosY  ) {
+       ball-> yVectora *= -1;
+       
+          
+       
+    }
+
+   if(ball->posY <= 0){
+       ball-> yVectora *= -1;
+        
+    }
+     usleep(90000);
      
- //if(  lift->isOccupied==false) {
+  }
+   ball->moveBall(lift->xVectora, lift->yVectora);
+    usleep(ball->getSpeed());
+}else{
+    ofstream myfile;
+   myfile.open ("output.txt");
+  myfile << "Writing this to a file.\n";
+  myfile<<"Lift pos x"<<lift->posX<<"lift pos y"<<lift->posY<<endl; 
+  myfile<<"Ball pos x"<<ball->posX<<"ball pos y"<<ball->posY<<endl; 
+  myfile<<"Ball id "<<ball->ballId<<endl;
+  myfile<<"Lift status "<<lift->isOccupied<<endl;
+  myfile<<"Lift ball in "<<lift->ballInsideIndex<<endl;
+
+  
   if((lift->posX==ball->posX && lift->posY==ball->posY ) || 
   (lift->posX+1==ball->posX  && lift->posY+1==ball->posY ) || 
   (lift->posX-1==ball->posX  && lift->posY-1==ball->posY ) ||
@@ -76,6 +112,8 @@ void moveBall(Ball * ball){
         ball-> xVectora=lift->xVectora;
         ball-> yVectora=lift->yVectora;
         lift->isOccupied=true;
+        lift->ballInsideIndex=ball->ballId;
+        lift->counter=0;
          
          ball->speed=1;
 
@@ -108,7 +146,8 @@ void moveBall(Ball * ball){
      usleep(ball->getSpeed());
  }
  }
- //e}
+ }
+ 
 
 }
 
@@ -153,12 +192,13 @@ void makeNewBall(){
 
         randDirectionChooser = rand() % 5 +1;
         speed = 50000;
-        Ball *ball = new Ball(randDirectionChooser,speed, x, y, false);
+        Ball *ball = new Ball(randDirectionChooser,speed, x, y, false, counterBall);
         balls.push_back(ball);
 
         threads.push_back(thread(moveBall, balls.back()));
 
         usleep(5000000);
+        counterBall++; 
 
     }
 }

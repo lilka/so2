@@ -2,11 +2,12 @@
 #include "Ball.h"
 using namespace std; 
 
-Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, bool isInLift) {
+Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, bool isInLift, int ballId) {
     this->direction = direction;
     this->speed = defaultSpeed;
     this->defaultSpeed=defaultSpeed;
     this->isInLift=isInLift;
+    this->ballId=ballId;
 
     windowPosX = x_init;
     windowPosY = y_init;
