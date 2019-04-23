@@ -1,5 +1,4 @@
 #include <mutex> 
-#include "Lift.h"
 #include <iostream> 
 using namespace std; 
 
@@ -17,19 +16,19 @@ public:
     short direction;
     int speed;  //prędkość z jaką porusza się piłka
     int defaultSpeed; 
-    bool isInLift; 
     int ballId; 
     
 
     
 public:
-    Ball(short vec, int , int, int, bool, int);
+    Ball(short vec, int , int, int, int);
     ~Ball();
-    void moveBall(int, int);
+    void moveBall();
     void drawBall();
     int getSpeed();
     int getX();
     int getY();
     void clearCircle();
     void setRandomDirection();
+    void recover();
 };

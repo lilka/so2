@@ -2,11 +2,10 @@
 #include "Ball.h"
 using namespace std; 
 
-Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, bool isInLift, int ballId) {
+Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, int ballId) {
     this->direction = direction;
     this->speed = defaultSpeed;
     this->defaultSpeed=defaultSpeed;
-    this->isInLift=isInLift;
     this->ballId=ballId;
 
     windowPosX = x_init;
@@ -17,12 +16,13 @@ Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, bool isInL
     setRandomDirection();
 }
 
-void Ball::moveBall(int vectorXL, int vectorYL) {
- 
+void Ball::recover(){
+    this->xVectora=oldXVectora;
+    this->yVectora=oldYVector;
+}
 
- if(xVectora==vectorXL&& yVectora==vectorYL){
-    xVectora=oldXVectora;
-    yVectora=oldYVector;}
+void Ball::moveBall() {
+
     posX += xVectora;
     posY += yVectora;
     speed+=5000;
@@ -53,14 +53,7 @@ void Ball::moveBall(int vectorXL, int vectorYL) {
         speed=defaultSpeed; 
         
     }
-} 
-
-
-
- 
- 
-  
-   
+}   
 
 
 void Ball::drawBall() {
@@ -78,35 +71,30 @@ void Ball::setRandomDirection() {
         case 1:
             xVectora = -2;
             yVectora = -1;
-            oldXVectora=-2;
-            oldYVector=-1;
+            
             break;
         case 2:
             xVectora = 0;
             yVectora = -1;
-            oldXVectora=0;
-            oldYVector=-1;
+            
             break;
         case 3:
           
             xVectora = -1;
             yVectora = -1;
-            oldXVectora=-1;
-            oldYVector=-1;
+            
             break;
         case 4:
             
             xVectora = 2;
             yVectora = -1;
-            oldXVectora= 2;
-            oldYVector=-1;
+            
             break;
         case 5:
             
             xVectora = 1;
             yVectora = -1;
-            oldXVectora=1;
-            oldYVector=-1;
+            
             break;
         
     }

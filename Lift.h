@@ -1,3 +1,5 @@
+#include "Ball.h"
+
 class Lift {
 public:
     //współrzędne połozenia windy
@@ -7,17 +9,21 @@ public:
     float windowPosX, windowPosY;
     //wspolrzedne wektora przesuniecia
     int xVectora, yVectora;
-    int ballInsideIndex;
-    bool isOccupied=false; 
+    int ballInsideIndex=-1;
     int counter;
 
     
 public:
-    Lift( int, int, bool, int);
+    Lift( int, int, int);
     ~Lift();
     void moveLift();
     void drawLift();
     int getX();
     int getY();
     void clearCircle();
+    void releaseBall();
+    bool hasBall();
+    bool isBallInLift(Ball*);
+private:
+    void increaseCounter();
 };
