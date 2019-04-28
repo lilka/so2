@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include "Lift.h"
 
-Lift::Lift( int x_init, int y_init,int counter) {
+Lift::Lift( int x_init, int y_init) {
    
 
     windowPosX = x_init;
@@ -10,12 +10,10 @@ Lift::Lift( int x_init, int y_init,int counter) {
     posX = windowPosX/2+5;
     posY = windowPosY/2+5;
 
-
-
     xVectora = -1;
     yVectora = 0;
 
-    counter=counter; 
+    counter=0; 
 }
 
 void Lift::moveLift() {
@@ -65,12 +63,9 @@ void Lift::drawLift() {
  }
 
  bool Lift::isBallInLift(Ball *ball) {
-   return (this->posX==ball->posX && this->posY==ball->posY ) || 
-  (this->posX+1==ball->posX  && this->posY+1==ball->posY ) || 
-  (this->posX-1==ball->posX  && this->posY-1==ball->posY ) ||
-  (this->posX-1==ball->posX  && this->posY==ball->posY   ) ||
-  (this->posX==ball->posX    && this->posY-1==ball->posY ) ||
-  (this->posX==ball->posX    && this->posY+1==ball->posY ) ||
-  (this->posX+1==ball->posX  && this->posY==ball->posY  );
+     return (this->posY == ball->posY) &&
+     ((this->posX == ball->posX) ||
+      (this->posX-1 == ball->posX) ||
+      (this->posX+1 == ball->posX));
  }
 

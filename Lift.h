@@ -14,7 +14,7 @@ public:
 
     
 public:
-    Lift( int, int, int);
+    Lift( int, int);
     ~Lift();
     void moveLift();
     void drawLift();

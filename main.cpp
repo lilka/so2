@@ -7,8 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-
-
+#include <mutex>
 
 using namespace std;
 
@@ -18,6 +17,7 @@ vector<Ball*> balls;
 bool endFlag = true;
 vector<thread> threads;
 int counterBall=0; 
+mutex liftMutex;
 
 void moveLift(Lift *lift){
  while((endFlag)){
@@ -43,17 +43,26 @@ void moveBall(Ball * ball){
   myfile.close();
   if(lift->ballInsideIndex==ball->ballId){
 
+    liftMutex.lock();
     if(lift->counter == 2) {
         ball->recover();
         lift->releaseBall();
     } else {
         ball->moveBall();
     }
+    liftMutex.unlock();
     usleep(90000);
 
 }else{
-  if(lift->ballInsideIndex==-1 && lift->isBallInLift(ball))
+  if(lift->isBallInLift(ball))
   {
+      liftMutex.lock();
+
+      if(lift->hasBall()) {
+        balls[lift->ballInsideIndex]->recover();
+        lift->releaseBall();
+      }
+
         ball->oldXVectora=ball->xVectora;
         ball-> oldYVector=ball->yVectora;
         ball-> posX=lift->posX;
@@ -61,6 +70,8 @@ void moveBall(Ball * ball){
         ball-> xVectora=lift->xVectora;
         ball-> yVectora=lift->yVectora;
         lift->ballInsideIndex=ball->ballId;
+
+        liftMutex.unlock();
  }
 
     ball->moveBall();
@@ -91,7 +102,7 @@ void makeNewLift(){
      float x = window->getWidth();
      float y = window->getHeight();
 
-     lift=new Lift(x,y,0);
+     lift=new Lift(x,y);
      moveLift(lift);
 
      usleep(50000);

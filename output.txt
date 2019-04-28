@@ -1,6 +1,6 @@
 Writing this to a file.
-Lift pos x97lift pos y20
-Ball pos x56ball pos y11
-Ball id 10
+Lift pos x103lift pos y20
+Ball pos x78ball pos y11
+Ball id 9
 Lift counter0
-Lift ball in 6
+Lift ball in -1

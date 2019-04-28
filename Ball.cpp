@@ -19,6 +19,7 @@ Ball::Ball(short direction, int defaultSpeed, int x_init, int y_init, int ballId
 void Ball::recover(){
     this->xVectora=oldXVectora;
     this->yVectora=oldYVector;
+    this->moveBall();
 }
 
 void Ball::moveBall() {
